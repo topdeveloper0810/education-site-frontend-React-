@@ -7,9 +7,10 @@ import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 
 const Question = (props) => {
   const [answerData, setAnswerData] = useState({
-    answer: "",
+    answer: [],
   });
-  console.log(props.answer);
+  console.log(answerData.answer);
+  // console.log(props.answer);
   const dispatch = useDispatch();
   const [state, setState] = useState(false);
   const quesDate = props.date.split("T")[0];
@@ -17,6 +18,25 @@ const Question = (props) => {
     e.preventDefault();
     dispatch(addStudentAnswer(answerData, props.id));
   };
+
+  const handleCheck = (e) => {
+    const value = e.target.value;
+    const answerList = answerData.answer;
+    const index = answerList.indexOf(value);
+    if (index === -1) {
+      answerList.push(value.toString());
+      setAnswerData({ answer: answerList });
+    } else {
+      answerList.splice(index, 1);
+      setAnswerData({ answer: answerList });
+    }
+  };
+
+  const handleChange = (e) => {
+    const answerArray = [e.target.value]
+    setAnswerData({ answer: answerArray });
+  };
+
   return (
     <div className="mx-3">
       <button
@@ -43,29 +63,58 @@ const Question = (props) => {
         style={{ display: `${state ? "block" : "none"}` }}
         aria-labelledby="dropdownDefaultButton"
       >
-        <div className="w-full gap-2 flex items-center">
+        <div className="w-full gap-2 items-center">
           {/* <div className="md:w-[15%] w-20 truncate">{props.topic}</div> */}
           {/* <div className="w-[45%] truncate">{props.question}</div> */}
           <div
-            className="md:w-[45%] truncate"
+            className="md:w-full truncate"
             dangerouslySetInnerHTML={{ __html: props.question }}
           />
+          {props.type === "multiple" ? (
+            <div className="flex flex-col w-30">
+              {props.list.map((item, index) => (
+                <label className="text-lg">
+                  <input
+                    type="checkbox"
+                    value={index + 1}
+                    onClick={handleCheck}
+                    disabled={props.answer === null ? false : true}
+                  />
+                  {item}
+                </label>
+              ))}
+            </div>
+          ) : (
+            <div className="mx-auto w-48 grid grid-cols-2 md:my-5 my-2 text-center">
+              <label className="cursor-pointer">
+                <input
+                  type="radio"
+                  value="YES"
+                  className="cursor-pointer"
+                  checked={answerData.answer === "YES"}
+                  onChange={handleChange}
+                  disabled={props.answer === null ? false : true}
+                />
+                YES
+              </label>
+              <label className="cursor-pointer">
+                <input
+                  type="radio"
+                  value="NO"
+                  className="cursor-pointer"
+                  checked={answerData.answer === "NO"}
+                  onChange={handleChange}
+                  disabled={props.answer === null ? false : true}
+                />
+                NO
+              </label>
+            </div>
+          )}
         </div>
         <form onSubmit={handleSubmit}>
           {props.answer === null ? (
             <div>
               <div className="md:none flex gap-2 items-end md:text-lg text-sm">
-                <label htmlFor="answer">
-                  Por favor, responda:
-                  <input
-                    name="answer"
-                    type="text"
-                    className="border-2 outline-none md:p-2 p-1 md:mx-2 rounded-md"
-                    onChange={(e) => {
-                      setAnswerData({ answer: e.target.value });
-                    }}
-                  ></input>
-                </label>
                 <button
                   type="submit"
                   className="bg-green-600 hover:bg-green-500 rounded-md text-white md:px-4 md:py-2 px-2 py-1 border-2 border-green-600"
@@ -75,7 +124,7 @@ const Question = (props) => {
               </div>
             </div>
           ) : (
-            <div className="grid grid-cols-3 items-center w-full">
+            <div className="grid grid-cols-3 items-center w-full text-center">
               <div>{props.answer.answer}</div>
               <div>{props.answer.answerDate.split("T")[0]}</div>
               <div>

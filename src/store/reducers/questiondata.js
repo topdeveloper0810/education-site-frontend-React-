@@ -85,6 +85,7 @@ export function getStudentQuery() {
 export function addStudentAnswer(data, id) {
   return async () => {
     try {
+      console.log(data);
       const response = await instance.post(`/qa/addans/${id}`, data);
     } catch (error) {
       console.log(error);
