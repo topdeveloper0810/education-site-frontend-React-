@@ -2,6 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 // import axios from "../../utils/axios";
 import instance from "../../utils/axios";
 import { dispatch } from "../index";
+import useNotification from "../../hooks/useNotification";
+
 
 const initialState = {
   questions: [],
@@ -51,8 +53,8 @@ export function addQuestions(data) {
       dispatch(
         questiondata.actions.addQuestion(response.data.data.newQuestion)
       );
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      console.log(err);
     }
   };
 }
@@ -85,7 +87,7 @@ export function getStudentQuery() {
 export function addStudentAnswer(data, id) {
   return async () => {
     try {
-      console.log(data);
+      // console.log("======",data);
       const response = await instance.post(`/qa/addans/${id}`, data);
     } catch (error) {
       console.log(error);
@@ -95,12 +97,11 @@ export function addStudentAnswer(data, id) {
 
 export function trueAnswer(quesId, ansId) {
   return async () => {
-    try{
-      const response = await instance.post(`/qa/trueans/${quesId}/${ansId}`)
+    try {
+      const response = await instance.post(`/qa/trueans/${quesId}/${ansId}`);
       console.log(response);
-    }
-    catch(error){
+    } catch (error) {
       console.log(error);
     }
-  }
+  };
 }

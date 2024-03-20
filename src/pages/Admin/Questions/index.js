@@ -18,6 +18,7 @@ const AdminQuestions = () => {
   const quesdata = useSelector((state) => state.questiondata);
   const QueryData = quesdata.questions;
   console.log("QueryData =====> ", QueryData);
+  console.log(QueryData.length);
   // Question schema
   const [questionData, setQuestionData] = useState({
     subject: "",
@@ -85,7 +86,9 @@ const AdminQuestions = () => {
             <input type="checkbox" />
             {item}
           </div>
-          <button onClick={Delete}><DeleteForeverOutlinedIcon /></button>
+          <button onClick={Delete}>
+            <DeleteForeverOutlinedIcon />
+          </button>
         </div>
       );
     });

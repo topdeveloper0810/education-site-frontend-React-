@@ -73,10 +73,13 @@ const QuestionCard = (props) => {
             </div>
             <div className="truncate">
               {/* <div> */}
-              {/* <div dangerouslySetInnerHTML={{ __html: props.question }} /> */}
-              <div className="md:w-[800px] w-48 text-ellipsis overflow-hidden">
+              <div
+                className="md:w-[800px] w-48 text-ellipsis overflow-hidden"
+                dangerouslySetInnerHTML={{ __html: props.question }}
+              />
+              {/* <div className="md:w-[800px] w-48 text-ellipsis overflow-hidden">
                 {props.question}
-              </div>
+              </div> */}
               {/* <div>{props.list}</div> */}
               <div className="flex flex-col w-30">
                 {props.list.map((item, index) => (
@@ -97,21 +100,28 @@ const QuestionCard = (props) => {
             </div>
           </div>
         </div>
-        {props.answer && <hr />}
+        <hr className="text-green-400" />
         {props.answer.map((item) => (
-          <div className="grid grid-cols-4">
-            <div>{item.student.name}</div>
-            <div>{item.answer}</div>
-            <div>{item.answerDate.split("T")[0]}</div>
-            <div>
-              {item.isCorrect === true ? (
-                <ThumbUpIcon className="text-green-800" />
-              ) : (
-                <div onClick={() => handleTrue(quesId, item._id)}>
-                  <ThumbDownOutlinedIcon className="text-green-800" />
-                </div>
-              )}
+          <div className="">
+            <div className="grid grid-cols-4 items-center text-center">
+              <div>{item.student.name}</div>
+              <div className="flex flex-col text-left">
+                {item.answer.map((item, index) => (
+                  <div key={index}>{item}</div>
+                ))}
+              </div>
+              <div>{item.answerDate.split("T")[0]}</div>
+              <div>
+                {item.isCorrect === true ? (
+                  <ThumbUpIcon className="text-green-800" />
+                ) : (
+                  <div onClick={() => handleTrue(quesId, item._id)}>
+                    <ThumbDownOutlinedIcon className="text-green-800" />
+                  </div>
+                )}
+              </div>
             </div>
+            <hr/>
           </div>
         ))}
       </div>

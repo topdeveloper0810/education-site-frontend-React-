@@ -4,12 +4,13 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import { useDispatch } from "../../store/index";
 import { addStudentAnswer } from "../../store/reducers/questiondata";
 import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
+import ThumbDownOutlinedIcon from "@mui/icons-material/ThumbDownOutlined";
 
 const Question = (props) => {
   const [answerData, setAnswerData] = useState({
     answer: [],
   });
-  console.log(answerData.answer);
+  // console.log(answerData);
   // console.log(props.answer);
   const dispatch = useDispatch();
   const [state, setState] = useState(false);
@@ -24,7 +25,7 @@ const Question = (props) => {
     const answerList = answerData.answer;
     const index = answerList.indexOf(value);
     if (index === -1) {
-      answerList.push(value.toString());
+      answerList.push(value);
       setAnswerData({ answer: answerList });
     } else {
       answerList.splice(index, 1);
@@ -33,7 +34,7 @@ const Question = (props) => {
   };
 
   const handleChange = (e) => {
-    const answerArray = [e.target.value]
+    const answerArray = [e.target.value];
     setAnswerData({ answer: answerArray });
   };
 
@@ -76,7 +77,7 @@ const Question = (props) => {
                 <label className="text-lg">
                   <input
                     type="checkbox"
-                    value={index + 1}
+                    value={item}
                     onClick={handleCheck}
                     disabled={props.answer === null ? false : true}
                   />
@@ -85,13 +86,13 @@ const Question = (props) => {
               ))}
             </div>
           ) : (
-            <div className="mx-auto w-48 grid grid-cols-2 md:my-5 my-2 text-center">
+            <div className="mx-auto w-48 grid grid-cols-2 text-center">
               <label className="cursor-pointer">
                 <input
                   type="radio"
                   value="YES"
                   className="cursor-pointer"
-                  checked={answerData.answer === "YES"}
+                  checked={answerData.answer[0] === "YES"}
                   onChange={handleChange}
                   disabled={props.answer === null ? false : true}
                 />
@@ -102,7 +103,7 @@ const Question = (props) => {
                   type="radio"
                   value="NO"
                   className="cursor-pointer"
-                  checked={answerData.answer === "NO"}
+                  checked={answerData.answer[0] === "NO"}
                   onChange={handleChange}
                   disabled={props.answer === null ? false : true}
                 />
@@ -111,6 +112,9 @@ const Question = (props) => {
             </div>
           )}
         </div>
+        <br />
+        <hr />
+        <br />
         <form onSubmit={handleSubmit}>
           {props.answer === null ? (
             <div>
@@ -125,13 +129,18 @@ const Question = (props) => {
             </div>
           ) : (
             <div className="grid grid-cols-3 items-center w-full text-center">
-              <div>{props.answer.answer}</div>
+              {/* <div>{props.answer.answer}</div> */}
+              <div className="flex flex-col">
+                {props.answer.answer.map((item, index) => (
+                  <div key={index}>{item}</div>
+                ))}
+              </div>
               <div>{props.answer.answerDate.split("T")[0]}</div>
               <div>
                 {props.answer.isCorrect === true ? (
                   <ThumbUpAltIcon className="text-green-800 scale-150" />
                 ) : (
-                  ""
+                  <ThumbDownOutlinedIcon className="text-green-800" />
                 )}
               </div>
             </div>
