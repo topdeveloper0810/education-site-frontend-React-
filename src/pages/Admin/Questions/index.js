@@ -17,8 +17,6 @@ const AdminQuestions = () => {
   // import query form database
   const quesdata = useSelector((state) => state.questiondata);
   const QueryData = quesdata.questions;
-  console.log("QueryData =====> ", QueryData);
-  console.log(QueryData.length);
   // Question schema
   const [questionData, setQuestionData] = useState({
     subject: "",
